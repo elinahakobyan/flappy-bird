@@ -1,4 +1,4 @@
-import { SceneEvents } from '../../events'
+import { SceneEvents } from '../events'
 
 export default class PreloadScene extends Phaser.Scene {
   public constructor() {

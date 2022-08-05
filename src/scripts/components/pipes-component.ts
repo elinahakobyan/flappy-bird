@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
-import { PipeEvents } from '../../events'
 import { GAP, KeyPointPos } from '../constants'
+import { PipeEvents } from '../events'
 
 export class PipesComponent extends Phaser.Physics.Arcade.Group {
   private _pipeUp: Phaser.Physics.Arcade.Sprite
@@ -12,11 +12,16 @@ export class PipesComponent extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene)
 
     this._build()
+    // this.setDepth(7)
+  }
+
+  public getPipes(): Phaser.Physics.Arcade.Sprite[] {
+    return [this._pipeUp, this._pipeBottom]
   }
 
   public movePipes(): void {
-    this._pipeUp.x -= 1
-    this._pipeBottom.x -= 1
+    this._pipeUp.x -= 2
+    this._pipeBottom.x -= 2
 
     if (this._pipeUp.x <= KeyPointPos.x) {
       this.emit(PipeEvents.AchieveAtPoint)
@@ -25,6 +30,11 @@ export class PipesComponent extends Phaser.Physics.Arcade.Group {
     if (this._pipeUp.x + this._pipeUp.width <= 0) {
       this.emit(PipeEvents.OutOfScreen)
     }
+  }
+
+  public stopMoving(): void {
+    this._pipeUp.x -= 0
+    this._pipeBottom.x -= 0
   }
 
   private _build(): void {

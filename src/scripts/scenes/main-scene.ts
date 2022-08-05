@@ -1,12 +1,16 @@
 import Phaser from 'phaser'
-import { PipeEvents, SceneEvents } from '../../events'
 import { BgComponent } from '../components/bg-component'
+import { BirdComponent } from '../components/bird-component'
 import { PipesComponent } from '../components/pipes-component'
+import { GameState } from '../constants'
+import { PipeEvents, SceneEvents } from '../events'
 
 export default class MainScene extends Phaser.Scene {
   private _bg: BgComponent
+  private _bird: BirdComponent
   private _pipes: PipesComponent[] = []
   private _ground: Phaser.Physics.Arcade.Sprite
+  private _state: GameState = GameState.Unknown
 
   public constructor() {
     super({ key: SceneEvents.MainSceneStart })
@@ -14,21 +18,38 @@ export default class MainScene extends Phaser.Scene {
 
   public create(): void {
     this._buildBg()
+    this._buildBird()
     this._buildPipes()
     this._buildGround()
-    this._buildBird()
-    //buildPipes
-    //buildBird
-    //buildBird
   }
 
   public update(): void {
-    this._updatePipes()
+    if (this._state !== GameState.Unknown && this._state !== GameState.Lose && this._state !== GameState.PreLose) {
+      this._updatePipes()
+    }
+
+    switch (this._state) {
+      case GameState.Lose:
+        this._bird.fall()
+        this._bird.die()
+        break
+
+      case GameState.PreLose:
+        this._bird.fall()
+        break
+
+      case GameState.Action:
+        this._checkCollisions()
+        break
+
+      default:
+        break
+    }
   }
 
   private _buildBg(): void {
     const bg = new BgComponent(this)
-    bg.setInteractive().on('pointerdown', this._onBgClick)
+    bg.setInteractive().on('pointerdown', this._onPointerDown, this)
     this.add.existing((this._bg = bg))
   }
 
@@ -44,8 +65,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   private _onPipesOutOfScreen(): void {
-    console.warn('OutOfScreen')
-
     const prevPipes = this._pipes.shift()
     prevPipes?.destroy()
   }
@@ -67,21 +86,45 @@ export default class MainScene extends Phaser.Scene {
     const ground = this.physics.add.sprite(width / 2, height - 59, 'ground')
     ground.body.allowGravity = false
     ground.setImmovable(true)
+
     ground.setDepth(10)
 
     this.add.existing(ground)
     this._ground = ground
-
-    // const ground = new GroundComponent(this, this.game.canvas.width, this.game.canvas.height)
-    // ground.body.allowGravity = false
-    // this.physics.add.existing((this._ground = ground))
   }
 
   private _buildBird(): void {
-    //
+    const bird = new BirdComponent(this)
+    this.add.existing((this._bird = bird))
   }
 
-  private _onBgClick(): void {
-    console.warn('BirdMove')
+  private _checkCollisions(): void {
+    this.physics.add.overlap(this._bird, [...this._pipes[0].getPipes()], () => {
+      this._state = GameState.PreLose
+    })
+
+    this.physics.add.overlap(this._bird, this._ground, () => {
+      this._state = GameState.Lose
+    })
+
+    if (this._bird.y - this._bird.height / 2 <= 0) {
+      this._state = GameState.PreLose
+    }
+  }
+
+  private _onPointerDown(): void {
+    switch (this._state) {
+      case GameState.Unknown:
+        this._bird.activate()
+        this._state = GameState.Action
+        break
+      case GameState.Action:
+        this._bird.jump()
+        this._checkCollisions()
+        break
+
+      default:
+        break
+    }
   }
 }
