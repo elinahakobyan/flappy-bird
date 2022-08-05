@@ -1,5 +1,10 @@
 export const SceneEvents = {
-  PreloadSceneStart: 'PreloadSceneStart',
-  PreloadSceneEnd: 'PreloadSceneEnd',
-  MainSceneStart: 'MainSceneStart'
+  PreloadSceneStart: 'SceneEventsPreloadSceneStart',
+  PreloadSceneEnd: 'SceneEventsPreloadSceneEnd',
+  MainSceneStart: 'SceneEventsMainSceneStart'
+}
+
+export const PipeEvents = {
+  OutOfScreen: 'PipeEventsOutOfScreen',
+  AchieveAtPoint: 'PipeEventsAchieveAtPoint'
 }
