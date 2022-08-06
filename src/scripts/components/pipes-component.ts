@@ -19,7 +19,7 @@ export class PipesComponent extends Phaser.Physics.Arcade.Group {
     return [this._pipeUp, this._pipeBottom]
   }
 
-  public movePipes(): void {
+  public move(): void {
     this._pipeUp.x -= MOVEMENT_SPEED
     this._pipeBottom.x -= MOVEMENT_SPEED
 
