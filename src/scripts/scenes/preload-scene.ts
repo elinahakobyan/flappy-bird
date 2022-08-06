@@ -6,11 +6,11 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   public preload() {
-    this.load.image('bg', 'assets/img/flappy_bird_bg.png')
-    this.load.image('bird', 'assets/img/flappy_bird_bird.png')
-    this.load.image('ground', 'assets/img/flappy_bird_ground.png')
-    this.load.image('pipeBottom', 'assets/img/flappy_bird_pipeBottom.png')
-    this.load.image('pipeUp', 'assets/img/flappy_bird_pipeUp.png')
+    this.load.image('bg', 'assets/img/bg.png')
+    this.load.image('bird', 'assets/img/bird.png')
+    this.load.image('ground', 'assets/img/ground.png')
+    this.load.image('pipeBottom', 'assets/img/pipeBottom.png')
+    this.load.image('pipeUp', 'assets/img/pipeUp.png')
     this.load.image('tutorial', 'assets/img/tutorial.png')
     this.load.image('game_over', 'assets/img/game_over.png')
     this.load.image('retry_btn', 'assets/img/retry_btn.png')
