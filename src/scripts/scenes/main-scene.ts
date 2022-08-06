@@ -11,6 +11,7 @@ export default class MainScene extends Phaser.Scene {
   private _pipes: PipesComponent[] = []
   private _ground: Phaser.Physics.Arcade.Sprite
   private _state: GameState = GameState.Unknown
+  private _tutorial: Phaser.GameObjects.Sprite
 
   public constructor() {
     super({ key: SceneEvents.MainSceneStart })
@@ -21,6 +22,7 @@ export default class MainScene extends Phaser.Scene {
     this._buildBird()
     this._buildPipes()
     this._buildGround()
+    this._showTutorial()
   }
 
   public update(): void {
@@ -98,6 +100,16 @@ export default class MainScene extends Phaser.Scene {
     this.add.existing((this._bird = bird))
   }
 
+  private _showTutorial(): void {
+    const tutorial = this.add.sprite(160, 250, 'tutorial')
+    this.add.existing((this._tutorial = tutorial))
+  }
+
+  private _hideTutorial(): void {
+    this._tutorial.visible = false
+    this._tutorial.destroy()
+  }
+
   private _checkCollisions(): void {
     this.physics.add.overlap(this._bird, [...this._pipes[0].getPipes()], () => {
       this._state = GameState.PreLose
@@ -116,8 +128,10 @@ export default class MainScene extends Phaser.Scene {
     switch (this._state) {
       case GameState.Unknown:
         this._bird.activate()
+        this._hideTutorial()
         this._state = GameState.Action
         break
+
       case GameState.Action:
         this._bird.jump()
         this._checkCollisions()

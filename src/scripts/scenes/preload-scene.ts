@@ -11,6 +11,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('ground', 'assets/img/flappy_bird_ground.png')
     this.load.image('pipeBottom', 'assets/img/flappy_bird_pipeBottom.png')
     this.load.image('pipeUp', 'assets/img/flappy_bird_pipeUp.png')
+    this.load.image('tutorial', 'assets/img/tutorial.png')
   }
 
   public create() {

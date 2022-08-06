@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { GAP, KeyPointPos } from '../constants'
+import { GAP, KeyPointPos, MOVEMENT_SPEED } from '../constants'
 import { PipeEvents } from '../events'
 
 export class PipesComponent extends Phaser.Physics.Arcade.Group {
@@ -20,8 +20,8 @@ export class PipesComponent extends Phaser.Physics.Arcade.Group {
   }
 
   public movePipes(): void {
-    this._pipeUp.x -= 2
-    this._pipeBottom.x -= 2
+    this._pipeUp.x -= MOVEMENT_SPEED
+    this._pipeBottom.x -= MOVEMENT_SPEED
 
     if (this._pipeUp.x <= KeyPointPos.x) {
       this.emit(PipeEvents.AchieveAtPoint)
