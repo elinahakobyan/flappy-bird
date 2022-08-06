@@ -49,9 +49,6 @@ export default class MainScene extends Phaser.Scene {
 
   private _onStateUpdate(state: GameState): void {
     switch (state) {
-      case GameState.Unknown:
-        this._showTutorial()
-        break
       case GameState.Lose:
         this._bird.fall()
         this._bird.die()
@@ -124,9 +121,11 @@ export default class MainScene extends Phaser.Scene {
   }
 
   private _buildTutorial(): void {
-    const tutorial = this.add.sprite(160, 250, 'tutorial')
+    const tutorial = this.add.sprite(160, 260, 'tutorial')
     tutorial.visible = false
     this.add.existing((this._tutorial = tutorial))
+
+    this._showTutorial()
   }
 
   private _hideTutorial(): void {

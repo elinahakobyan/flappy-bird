@@ -43,7 +43,7 @@ export class PipesComponent extends Phaser.Physics.Arcade.Group {
 
     const pipeDown = this.scene.physics.add.sprite(
       288,
-      Math.random() * 70 + (pipeUp.y + pipeUp.height + GAP),
+      Math.random() * 50 + (pipeUp.y + pipeUp.height + GAP),
       'pipeBottom'
     )
 
