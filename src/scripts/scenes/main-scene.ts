@@ -4,7 +4,7 @@ import { BirdComponent } from '../components/bird-component'
 import { LoseView } from '../components/lose-view'
 import { PipesComponent } from '../components/pipes-component'
 import { GameState } from '../constants'
-import { GameStateEvents, LoseViewEvents, PipeEvents, SceneEvents } from '../events'
+import { LoseViewEvents, PipeEvents, SceneEvents } from '../events'
 
 export default class MainScene extends Phaser.Scene {
   private _bg: BgComponent
@@ -23,7 +23,6 @@ export default class MainScene extends Phaser.Scene {
 
   public create(): void {
     this._setGameState(GameState.Unknown)
-    this.events.on(GameStateEvents.StateUpdate, this._onStateUpdate, this)
 
     this._buildBg()
     this._buildBird()
@@ -42,9 +41,10 @@ export default class MainScene extends Phaser.Scene {
 
   private _setGameState(state: GameState): void {
     if (this._state !== state) {
-      this.events.emit(GameStateEvents.StateUpdate, state)
       this._state = state
     }
+
+    this._onStateUpdate(this._state)
   }
 
   private _onStateUpdate(state: GameState): void {
